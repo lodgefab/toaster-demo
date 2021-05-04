@@ -63,28 +63,47 @@ gltfLoader.load(
             child.material = bakedMaterial
         })
 
-        // const handleMesh = gltf.scene.children.find(child=> child.name === 'handle')
-        // const planeMesh = gltf.scene.children.find(child=> child.name === 'Plane')
-        // const breadMesh = gltf.scene.children.find(child=> child.name === 'bread')
-        // console.log(handleMesh, planeMesh, breadMesh)
-        // handleMesh.material = handleMaterial
-        // planeMesh.material = handleMaterial
-        // breadMesh.material = handleMaterial
+
 
         scene.add(gltf.scene)
     }
 )
 
+
+
 /**
  * Input
  */
-const input = document.createElement( 'input' );
-input.className = 'input';
-input.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
 
+function createInput( width, height, cssColor, pos, rot ) {
 
-const objectCSS = new CSS3DObject( input );
-scene2.add( objectCSS );
+    const element = document.createElement( 'input' );
+    element.style.width = width + 'px';
+    element.style.height = height/10 + 'px';
+    element.style.opacity = 0.75;
+    element.style.background = cssColor;
+
+    const object = new CSS3DObject( element );
+    object.position.copy( pos );
+    object.rotation.copy( rot );
+    scene2.add( object );
+
+    // scene1追加用
+    // const geometry = new THREE.PlaneGeometry( width, height );
+    // const mesh = new THREE.Mesh( geometry, material );
+    // mesh.position.copy( object.position );
+    // mesh.rotation.copy( object.rotation );
+    // scene.add( mesh );
+}
+
+// bottom
+createInput(
+    30, 30,
+    'seagreen',
+    new THREE.Vector3( 0, 0, 0 ),
+    new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, 0 )
+)
+
 
 /**
  * Sizes
