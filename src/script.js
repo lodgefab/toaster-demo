@@ -25,7 +25,7 @@ const scene = new THREE.Scene()
 const scene2 = new THREE.Scene();
 
 //Init Elements
-let element, object, mesh
+let element, object, mesh, button
 
 /**
  * Mouse
@@ -102,18 +102,22 @@ rayDirection.normalize()
  */
 
 function createInput( width, height, cssColor, pos, rot ) {
-
     element = document.createElement( 'input' );
     element.style.width = width + 'px';
     element.style.height = height + 'px';
     element.style.opacity = 0.75;
     element.style.background = cssColor;
     element.style.borderStyle = 'solid';
-    element.style.borderWidth = 0+'px';
+    element.style.borderWidth = 1+'px';
 
-    object = new CSS3DObject( element );
+    object = new CSS3DObject( element);
     object.position.copy( pos );
     object.rotation.copy( rot );
+    element.parent = object;
+    object.element.onclick = function() { 
+        console.log('Input Clicked!') 
+        this.focus()
+    };
     scene2.add( object );
 
     // scene1追加用
@@ -124,11 +128,43 @@ function createInput( width, height, cssColor, pos, rot ) {
     scene.add( mesh );
 }
 
+function createButton( width, height, cssColor, pos, rot ) {
+    button = document.createElement( 'button' );
+    button.style.width = width + 'px';
+    button.style.height = height + 'px';
+    button.style.opacity = 0.75;
+    button.style.background = cssColor;
+    button.style.borderStyle = 'solid';
+    button.style.borderWidth = 1+'px';
+
+    object = new CSS3DObject( button);
+    object.position.copy( pos );
+    object.rotation.copy( rot );
+    button.parent = object;
+    object.element.onclick = function() { 
+        console.log('Button Clicked!') 
+    };
+    scene2.add( object );
+
+    // scene1追加用
+    // const geometry = new THREE.PlaneGeometry( width, height );
+    // mesh = new THREE.Mesh( geometry, material );
+    // mesh.position.copy( object.position );
+    // mesh.rotation.copy( object.rotation );
+    // scene.add( mesh );
+}
+
 // bottom
 createInput(
-    6, 1,
+    240, 44,
     'seagreen',
     new THREE.Vector3( 0, 0, 0 ),
+    new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, 0 )
+)
+createButton(
+    80, 44,
+    'blue',
+    new THREE.Vector3( 180, 0, 0 ),
     new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, 0 )
 )
 
