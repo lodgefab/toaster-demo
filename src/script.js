@@ -102,7 +102,7 @@ rayDirection.normalize()
  */
 
 function createInput( width, height, cssColor, pos, rot ) {
-    element = document.createElement( 'input' );
+    element = document.createElement( 'form' );
     element.style.width = width + 'px';
     element.style.height = height + 'px';
     element.style.opacity = 0.75;
@@ -110,49 +110,42 @@ function createInput( width, height, cssColor, pos, rot ) {
     element.style.borderStyle = 'solid';
     element.style.borderWidth = 1+'px';
 
+
+    const input = document.createElement( 'input' );
+    input.style.width = width*3/5 + 'px';
+    input.style.height = height + 'px';
+	input.className = 'input';
+	input.textContent = 'インプット';
+	element.appendChild( input );
+
+
+    button = document.createElement( 'button' );
+    button.style.width = width/5 + 'px';
+    button.style.height = height + 'px';
+    button.style.opacity = 0.75;
+    button.style.background = cssColor;
+    button.style.borderStyle = 'solid';
+    button.style.borderWidth = 1+'px';
+    element.appendChild( button );
+
     object = new CSS3DObject( element);
     object.position.copy( pos );
     object.rotation.copy( rot );
     element.parent = object;
     object.element.onclick = function() { 
         console.log('Input Clicked!') 
-        this.focus()
+        input.focus()
     };
-    scene2.add( object );
+    // scene2.add( object );
 
     // scene1追加用
     const geometry = new THREE.PlaneGeometry( width, height );
     mesh = new THREE.Mesh( geometry, material );
     mesh.position.copy( object.position );
     mesh.rotation.copy( object.rotation );
-    scene.add( mesh );
-}
-
-function createButton( width, height, cssColor, pos, rot ) {
-    button = document.createElement( 'button' );
-    button.style.width = width + 'px';
-    button.style.height = height + 'px';
-    button.style.opacity = 0.75;
-    button.style.background = cssColor;
-    button.style.borderStyle = 'solid';
-    button.style.borderWidth = 1+'px';
-
-    object = new CSS3DObject( button);
-    object.position.copy( pos );
-    object.rotation.copy( rot );
-    button.parent = object;
-    object.element.onclick = function() { 
-        console.log('Button Clicked!') 
-    };
-    scene2.add( object );
-
-    // scene1追加用
-    // const geometry = new THREE.PlaneGeometry( width, height );
-    // mesh = new THREE.Mesh( geometry, material );
-    // mesh.position.copy( object.position );
-    // mesh.rotation.copy( object.rotation );
     // scene.add( mesh );
 }
+
 
 // bottom
 createInput(
@@ -161,13 +154,6 @@ createInput(
     new THREE.Vector3( 0, 0, 0 ),
     new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, 0 )
 )
-createButton(
-    80, 44,
-    'blue',
-    new THREE.Vector3( 180, 0, 0 ),
-    new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, 0 )
-)
-
 
 /**
  * Sizes
