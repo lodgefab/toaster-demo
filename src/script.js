@@ -25,7 +25,7 @@ const scene = new THREE.Scene()
 const scene2 = new THREE.Scene();
 
 //Init Elements
-let element, object, mesh, button
+let element, object, mesh, button, breadMesh;
 
 //Init Setting
 const scale = 30;
@@ -37,12 +37,16 @@ window.onhashchange = function() {
     if (location.hash === '#thankyou') {
       // animate camera to about section
         console.log("Thank You")
+        gsap.to(breadMesh.position, { duration: 0.4, delay: 1, y: 0.6 })
     } else if (location.hash === '#work') {
       // animate camera to work section
     } else if (location.hash === '') {
       // animate camera to home section
     }
 }
+
+
+
 /**
  * Mouse
  */
@@ -54,6 +58,7 @@ window.addEventListener('mousemove', (event) =>
      mouse.y = - (event.clientY / sizes.height) * 2 + 1 
     // console.log(mouse)
 })
+
 
 /**
  * Loaders
@@ -97,12 +102,13 @@ gltfLoader.load(
             child.material = bakedMaterial
         })
 
-
-
         scene.add(gltf.scene)
         gltf.scene.scale.set(1*scale,1*scale,1*scale); 
+        breadMesh = gltf.scene.children.find((child) => child.name === 'bread')
+        
     }
 )
+
 
 
 /**
@@ -206,8 +212,8 @@ createInput(
     new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, - 180 * THREE.MathUtils.DEG2RAD )
 )
 createDescription(
-    contentWidth, 500,
-    new THREE.Vector3( 0, 0, 0 ),
+    contentWidth, 200,
+    new THREE.Vector3( 0, 0, -120 ),
     new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, - 180 * THREE.MathUtils.DEG2RAD )
 )
 
