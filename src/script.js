@@ -17,6 +17,7 @@ const gui = new dat.GUI({
 
 
 
+
 // Canvas
 // const canvas = document.querySelector('canvas.webgl')
 
@@ -31,7 +32,11 @@ let element, object, mesh, button, breadMesh;
 const scale = 30;
 const contentWidth = 320;
 
-
+/**
+ * AxisHelper
+ */
+const axesHelper = new THREE.AxesHelper( 100 );
+scene.add( axesHelper );
 
 
 /**
@@ -123,7 +128,7 @@ function moveBread(duration, delay, y){
  */
 function createDescription(width, height, pos, rot){
     element = document.createElement( 'p' );
-    const textNode = document.createTextNode('『Lobsterr Letter』は、 世界中のメディアから「変化の種」となるようなストーリーをキュレートするウィークリーニュースレターです。コンパクトな文量で、 ロングスパンの視座を。 皮肉や批判よりも、 分析と考察を。 ファストフードのようなニュースではなく、 心と頭の栄養となるようなインサイトを。目まぐるしく進む社会のなかで、 立ち止まり、 深呼吸をして、 考えるためのきっかけをお届けします。');
+    const textNode = document.createTextNode('『Toaster🍞 』は、 世界中のメディアから「変化の種」となるようなストーリーをキュレートするウィークリーニュースレターです。コンパクトな文量で、 ロングスパンの視座を。 皮肉や批判よりも、 分析と考察を。 ファストフードのようなニュースではなく、 心と頭の栄養となるようなインサイトを。目まぐるしく進む社会のなかで、 立ち止まり、 深呼吸をして、 考えるためのきっかけをお届けします。');
     element.setAttribute("id", "description");
     element.style.width = width + 'px';
     element.style.height = height + 'px';
@@ -205,7 +210,7 @@ function createInput( width, height, cssColor, pos, rot ) {
 createInput(
     contentWidth, 32,
     'seagreen',
-    new THREE.Vector3( 0, 0, 0 ),
+    new THREE.Vector3( 0, 0, -240 ),
     new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, - 180 * THREE.MathUtils.DEG2RAD )
 )
 createDescription(
@@ -222,6 +227,7 @@ const sizes = {
     height: window.innerHeight
 }
 
+
 window.addEventListener('resize', () =>
 {
     // Update sizes
@@ -234,9 +240,19 @@ window.addEventListener('resize', () =>
 
     // Update renderer
     renderer.setSize(sizes.width, sizes.height)
+    renderer2.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
+
+function updateCamera(ev) {
+    let div1 = document.getElementById("div1");
+	camera.position.z = - window.scrollY-300;
+}
+
+window.addEventListener("scroll",()=> {
+    updateCamera()
+});
 
 /**
  * Camera
@@ -245,13 +261,20 @@ window.addEventListener('resize', () =>
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100*scale)
 camera.position.x = 0*scale
 camera.position.y = 5*scale
-camera.position.z = -10*scale
+camera.position.z = - window.scrollY - 300
+camera.lookAt(0, 0, 0);
 scene.add(camera)
 
+gui.add(camera.position, 'x').min(0*scale).max(0).step(1)
+gui.add(camera.position, 'y').min(5*scale).max(5*scale+180).step(1)
+gui.add(camera.position, 'z').min(-10*scale).max(0).step(1)
 
 /**
  * Renderer
  */
+
+const main = document.getElementById("main");
+
 const renderer = new THREE.WebGLRenderer({
     // canvas: canvas,
     antialias: true
@@ -259,34 +282,30 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.outputEncoding = THREE.sRGBEncoding
-document.body.appendChild( renderer.domElement );
+main.appendChild( renderer.domElement );
 
 // Rendererその２
 const renderer2 = new CSS3DRenderer()
-renderer2.setSize( window.innerWidth, window.innerHeight );
+renderer2.setSize( sizes.width, sizes.height);
+// renderer2.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer2.domElement.style.position = 'absolute';
 renderer2.domElement.style.top = 0;
-document.body.appendChild( renderer2.domElement );
+main.appendChild( renderer2.domElement );
 
 
 // Controls
 
-const controls = new OrbitControls( camera, renderer2.domElement );
-controls.minZoom = 0.5;
-controls.maxZoom = 2;
-controls.enableDamping = true
+// const controls = new OrbitControls( camera, renderer2.domElement );
+// controls.minZoom = 0.5;
+// controls.maxZoom = 2;
+// controls.enableDamping = true
 
 /**
  * Animate
  */
 const clock = new THREE.Clock()
 
-function updateCamera(ev) {
-    let body = document.getElementById("body");
-	camera.position.z = -1.5 + window.scrollY / 250.0;
-}
 
-window.addEventListener("scroll", updateCamera);
 
 const tick = () =>
 {
@@ -313,7 +332,7 @@ const tick = () =>
         currentIntersect = null
     }
     // Update controls
-    controls.update()
+    // controls.update()
 
     // Render
     renderer.render(scene, camera)

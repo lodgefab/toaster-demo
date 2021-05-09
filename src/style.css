@@ -7,7 +7,8 @@
 html,
 body
 {
-    overflow: hidden;
+    /* overflow: hidden; */
+    background-color: #000000;
 }
 
 .webgl
@@ -17,7 +18,13 @@ body
     left: 0;
     outline: none;
 }
-
+#main{
+    position:fixed;
+    top:0;
+    bottom:0;
+    right:0;
+    left:0;
+}
 #description{
     font-size:12px;
     line-height: 200%;
@@ -28,4 +35,14 @@ body
 
 #mc-embedded-subscribe{
     background-color:brown;
+}
+
+.page-wrapper {
+	padding: 0px;
+	margin: 12px 48px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: calc(100% - 2*48px);
+	word-wrap: break-word;
 }
