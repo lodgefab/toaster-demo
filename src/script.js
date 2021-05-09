@@ -32,11 +32,7 @@ const scale = 30;
 const contentWidth = 320;
 //Location Hash
 // Removes any hash, and triggers event listener
-if (location.hash === '#thankyou') {
-    // animate camera to about section
-    console.log("Thank You from IF")
-    moveBread(0.4, 1, 0.6)
-}
+
 window.onhashchange = function() {
     if (location.hash === '#thankyou') {
       // animate camera to about section
@@ -110,6 +106,12 @@ gltfLoader.load(
         scene.add(gltf.scene)
         gltf.scene.scale.set(1*scale,1*scale,1*scale); 
         breadMesh = gltf.scene.children.find((child) => child.name === 'bread')
+        
+        if (location.hash === '#thankyou') {
+            // animate camera to about section
+            console.log("Thank You from IF")
+            moveBread(0.4, 1, 0.6)
+        }
         
     }
 )
@@ -292,6 +294,13 @@ controls.enableDamping = true
  * Animate
  */
 const clock = new THREE.Clock()
+
+function updateCamera(ev) {
+    let body = document.getElementById("body");
+	camera.position.z = -1.5 + window.scrollY / 250.0;
+}
+
+window.addEventListener("scroll", updateCamera);
 
 const tick = () =>
 {
