@@ -17,3 +17,7 @@ body
     left: 0;
     outline: none;
 }
+
+#mc-embedded-subscribe{
+    background-color:brown;
+}
