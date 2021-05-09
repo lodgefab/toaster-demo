@@ -32,7 +32,11 @@ const scale = 30;
 const contentWidth = 320;
 //Location Hash
 // Removes any hash, and triggers event listener
-// location.hash = "";
+if (location.hash === '#thankyou') {
+    // animate camera to about section
+    console.log("Thank You")
+    gsap.to(breadMesh.position, { duration: 0.4, delay: 1, y: 0.6 })
+}
 window.onhashchange = function() {
     if (location.hash === '#thankyou') {
       // animate camera to about section
