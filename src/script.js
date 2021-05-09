@@ -30,21 +30,7 @@ let element, object, mesh, button, breadMesh;
 //Init Setting
 const scale = 30;
 const contentWidth = 320;
-//Location Hash
-// Removes any hash, and triggers event listener
 
-window.onhashchange = function() {
-    if (location.hash === '#thankyou') {
-      // animate camera to about section
-        console.log("Thank You from onHashChange")
-        moveBread(0.4, 1, 0.6)
-        // gsap.to(breadMesh.position, { duration: 0.4, delay: 1, y: 0.6 })
-    } else if (location.hash === '#work') {
-      // animate camera to work section
-    } else if (location.hash === '') {
-      // animate camera to home section
-    }
-}
 
 
 
@@ -108,8 +94,8 @@ gltfLoader.load(
         breadMesh = gltf.scene.children.find((child) => child.name === 'bread')
         
         if (location.hash === '#thankyou') {
-            // animate camera to about section
-            console.log("Thank You from IF")
+            // animate bread
+            // console.log("Thank You from IF")
             moveBread(0.4, 1, 0.6)
         }
         
@@ -169,7 +155,7 @@ function createInput( width, height, cssColor, pos, rot ) {
 
     const input = document.createElement( 'input' );
     input.setAttribute("type", "email");
-    input.setAttribute("value", "init");
+    input.setAttribute("value", "");
     input.setAttribute("name", "EMAIL");
     input.setAttribute("class", "email");
     input.setAttribute("id", "mce-EMAIL");
