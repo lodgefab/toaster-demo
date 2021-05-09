@@ -34,14 +34,15 @@ const contentWidth = 320;
 // Removes any hash, and triggers event listener
 if (location.hash === '#thankyou') {
     // animate camera to about section
-    console.log("Thank You")
-    gsap.to(breadMesh.position, { duration: 0.4, delay: 1, y: 0.6 })
+    console.log("Thank You from IF")
+    moveBread(0.4, 1, 0.6)
 }
 window.onhashchange = function() {
     if (location.hash === '#thankyou') {
       // animate camera to about section
-        console.log("Thank You")
-        gsap.to(breadMesh.position, { duration: 0.4, delay: 1, y: 0.6 })
+        console.log("Thank You from onHashChange")
+        moveBread(0.4, 1, 0.6)
+        // gsap.to(breadMesh.position, { duration: 0.4, delay: 1, y: 0.6 })
     } else if (location.hash === '#work') {
       // animate camera to work section
     } else if (location.hash === '') {
@@ -124,6 +125,10 @@ const rayOrigin = new THREE.Vector3(- 3, 0, 0)
 const rayDirection = new THREE.Vector3(10, 0, 0)
 rayDirection.normalize()
 
+
+function moveBread(duration, delay, y){
+    gsap.to(breadMesh.position, { duration: 0.4, delay: 1, y: 0.6 })
+}
 
 /**
  * Input
