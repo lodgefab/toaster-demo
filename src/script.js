@@ -32,7 +32,7 @@ const scale = 30;
 const contentWidth = 320;
 //Location Hash
 // Removes any hash, and triggers event listener
-location.hash = "";
+// location.hash = "";
 window.onhashchange = function() {
     if (location.hash === '#thankyou') {
       // animate camera to about section
