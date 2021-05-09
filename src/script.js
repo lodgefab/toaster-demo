@@ -26,12 +26,12 @@ const scene = new THREE.Scene()
 const scene2 = new THREE.Scene();
 
 //Init Elements
-let element, object, mesh, button, breadMesh;
+let element, object, mesh, button, breadMesh, handleMesh, buttonMesh;
 
 //Init Setting
-const scale = 30;
+const scale = 50;
 const contentWidth = 280;
-const initialZ = scale*12;
+const initialZ = scale*8;
 
 
 /**
@@ -92,6 +92,7 @@ gltfLoader.load(
         scene.add(gltf.scene)
         gltf.scene.scale.set(1*scale,1*scale,1*scale); 
         breadMesh = gltf.scene.children.find((child) => child.name === 'bread')
+        handleMesh = gltf.scene.children.find((child) => child.name === 'handle')
         
         if (location.hash === '#thankyou') {
             // animate bread
@@ -115,15 +116,24 @@ rayDirection.normalize()
 
 
 function moveBread(duration, delay, y){
-    gsap.to(breadMesh.position, { duration: 0.4, delay: 1, y: 0.6 })
+    gsap.to(breadMesh.position, { duration: duration, delay: delay, y: y })
+    gsap.to(handleMesh.position, { duration: 0.4, delay: 0, y: 0.2 })
 }
-
+function hoverHandle(elapsedTime){
+    gsap.to(breadMesh.position, { duration: 0.2, delay: 0, y: -0.2 })
+    gsap.to(handleMesh.position, { duration: 0.2, delay: 0, y: -0.2 })
+    // gsap.to(handleMesh.rotation, { duration: 0.2, delay: 0, x: Math.PI * elapsedTime * 0.1 })
+}
+function resetHandle(elapsedTime){
+    gsap.to(breadMesh.position, { duration: 0.4, delay: 0, y: 0 })
+    gsap.to(handleMesh.position, { duration: 0.4, delay: 0, y: 0 })
+}
 /**
  * Input
  */
 function createDescription(width, height, pos, rot){
     element = document.createElement( 'p' );
-    const textNode = document.createTextNode('『Toaster🍞 』は、 世界中のメディアから「変化の種」となるようなストーリーをキュレートするウィークリーニュースレターです。コンパクトな文量で、 ロングスパンの視座を。 皮肉や批判よりも、 分析と考察を。 ファストフードのようなニュースではなく、 心と頭の栄養となるようなインサイトを。目まぐるしく進む社会のなかで、 立ち止まり、 深呼吸をして、 考えるためのきっかけをお届けします。');
+    const textNode = document.createTextNode('『Toaster 🍞 』は、骨董マニアでネオン作家の市川と、デジファブフリークな中島、２人のデザイナが、LODGEの活動の中で話題になったこと、実験したこと、調べたこと、ボツになった企画などを、ゆるく紹介していく不定期のニュースレターです。');
     element.setAttribute("id", "description");
     element.style.width = width + 'px';
     element.style.height = height + 'px';
@@ -161,7 +171,7 @@ function createInput( width, height, cssColor, pos, rot ) {
     input.setAttribute("id", "mce-EMAIL");
     input.setAttribute("placeholder", "YourAddress@mail.com");
     input.setAttribute("required", "true");
-    input.style.width = width*3.8/5 + 'px';
+    input.style.width = width*3.5/5 + 'px';
     input.style.height = height + 'px';
 	input.className = 'input';
 	input.textContent = 'インプット';
@@ -174,9 +184,9 @@ function createInput( width, height, cssColor, pos, rot ) {
     button.setAttribute("name", "subscribe");
     button.setAttribute("id", "mc-embedded-subscribe");
     button.setAttribute("class", "button");
-    button.style.width = width/5 + 'px';
+    button.style.width = width*1.2/5 + 'px';
     button.style.height = height + 'px';
-    button.style.opacity = 0.75;
+    // button.style.opacity = 0.75;
     // button.style.background = cssColor;
     // button.style.borderStyle = 'solid';
     // button.style.borderWidth = 1+'px';
@@ -186,9 +196,13 @@ function createInput( width, height, cssColor, pos, rot ) {
     object.position.copy( pos );
     object.rotation.copy( rot );
     element.parent = object;
-    object.element.onclick = function() { 
-        console.log('Input Clicked!') 
-        input.focus()
+    object.element.subscribe.onmouseover = function() { 
+        // console.log('Input Clicked!') 
+        hoverHandle()
+    };
+    object.element.subscribe.onmouseout = function() { 
+        // console.log('Input Clicked!') 
+        resetHandle()
     };
     scene2.add( object );
 
@@ -205,14 +219,15 @@ function createInput( width, height, cssColor, pos, rot ) {
 createInput(
     contentWidth, 32,
     'seagreen',
-    new THREE.Vector3( 0, 0, -280 ),
+    new THREE.Vector3( 0, 0, -80 ),
     new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, - 180 * THREE.MathUtils.DEG2RAD )
 )
 createDescription(
     contentWidth, 170,
-    new THREE.Vector3( 0, 0, -160 ),
+    new THREE.Vector3( 0, 0, -200 ),
     new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, - 180 * THREE.MathUtils.DEG2RAD )
 )
+
 
 /**
  * Sizes
@@ -255,7 +270,7 @@ window.addEventListener("scroll",()=> {
 // Base camera
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100*scale)
 camera.position.x = 0*scale
-camera.position.y = 9*scale
+camera.position.y = 6*scale
 camera.position.z = - window.scrollY - initialZ
 camera.lookAt(0, 0, 0);
 scene.add(camera)
@@ -314,7 +329,8 @@ const tick = () =>
     {
         if(!currentIntersect)
         {
-            console.log('mouse enter')
+            // console.log('mouse enter')
+            // hoverHandle(elapsedTime)
         }
         currentIntersect = intersects[0]
     }
@@ -322,7 +338,8 @@ const tick = () =>
     {
         if(currentIntersect)
         {
-            console.log('mouse leave')
+            // console.log('mouse leave')
+            // resetHandle()
         }
         currentIntersect = null
     }

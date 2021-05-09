@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1&display=swap');
+
 *
 {
     margin: 0;
@@ -26,6 +29,7 @@ body
     left:0;
 }
 #description{
+    font-family: 'Shippori Mincho B1', serif;
     font-size:11px;
     line-height: 200%;
     color:#3c270e;
@@ -36,6 +40,8 @@ body
     font-size: 11px;   
 }
 #mce-EMAIL{
+    font-family: 'Shippori Mincho B1', serif;
+    background-color: rgba(255,255,255,0.44);
     box-sizing: border-box;
     padding:0 8px;
     border:0px solid #ffffff;
@@ -54,6 +60,7 @@ body
 
 
 #mc-embedded-subscribe{
+    font-family: 'Shippori Mincho B1', serif;
     background-color:#30200d;
     color:#ffffff;
     margin:0 0 0 8px;
