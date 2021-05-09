@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
-
+import gsap from 'gsap'
 
 /**
  * Base
@@ -27,6 +27,9 @@ const scene2 = new THREE.Scene();
 //Init Elements
 let element, object, mesh, button
 
+//Init Setting
+const scale = 30;
+const contentWidth = 320;
 //Location Hash
 // Removes any hash, and triggers event listener
 location.hash = "";
@@ -90,12 +93,14 @@ gltfLoader.load(
     (gltf)=>{
         gltf.scene.traverse((child)=>{
             // console.log(child)
+            // child.geometry.scale =(10,10,10)
             child.material = bakedMaterial
         })
 
 
 
         scene.add(gltf.scene)
+        gltf.scene.scale.set(1*scale,1*scale,1*scale); 
     }
 )
 
@@ -113,6 +118,20 @@ rayDirection.normalize()
 /**
  * Input
  */
+function createDescription(width, height, pos, rot){
+    element = document.createElement( 'p' );
+    const textNode = document.createTextNode('『Lobsterr Letter』は、 世界中のメディアから「変化の種」となるようなストーリーをキュレートするウィークリーニュースレターです。コンパクトな文量で、 ロングスパンの視座を。 皮肉や批判よりも、 分析と考察を。 ファストフードのようなニュースではなく、 心と頭の栄養となるようなインサイトを。目まぐるしく進む社会のなかで、 立ち止まり、 深呼吸をして、 考えるためのきっかけをお届けします。');
+    element.setAttribute("id", "description");
+    element.style.width = width + 'px';
+    element.style.height = height + 'px';
+    element.appendChild(textNode);
+    
+    object = new CSS3DObject( element);
+    object.position.copy( pos );
+    object.rotation.copy( rot );
+    element.parent = object;
+    scene2.add( object );
+}
 
 function createInput( width, height, cssColor, pos, rot ) {
     element = document.createElement( 'form' );
@@ -127,8 +146,8 @@ function createInput( width, height, cssColor, pos, rot ) {
     element.style.height = height + 'px';
     element.style.opacity = 0.75;
     // element.style.background = cssColor;
-    element.style.borderStyle = 'solid';
-    element.style.borderWidth = 1+'px';
+    // element.style.borderStyle = 'solid';
+    // element.style.borderWidth = 1+'px';
 
 
     const input = document.createElement( 'input' );
@@ -139,7 +158,7 @@ function createInput( width, height, cssColor, pos, rot ) {
     input.setAttribute("id", "mce-EMAIL");
     input.setAttribute("placeholder", "email-address");
     input.setAttribute("required", "true");
-    input.style.width = width*3/5 + 'px';
+    input.style.width = width*3.8/5 + 'px';
     input.style.height = height + 'px';
 	input.className = 'input';
 	input.textContent = 'インプット';
@@ -181,10 +200,15 @@ function createInput( width, height, cssColor, pos, rot ) {
 
 // bottom
 createInput(
-    240, 44,
+    contentWidth, 32,
     'seagreen',
     new THREE.Vector3( 0, 0, 0 ),
-    new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, 0 )
+    new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, - 180 * THREE.MathUtils.DEG2RAD )
+)
+createDescription(
+    contentWidth, 500,
+    new THREE.Vector3( 0, 0, 0 ),
+    new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, - 180 * THREE.MathUtils.DEG2RAD )
 )
 
 /**
@@ -215,10 +239,10 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 0
-camera.position.y = 5
-camera.position.z = -10
+const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100*scale)
+camera.position.x = 0*scale
+camera.position.y = 5*scale
+camera.position.z = -10*scale
 scene.add(camera)
 
 
