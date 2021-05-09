@@ -27,6 +27,19 @@ const scene2 = new THREE.Scene();
 //Init Elements
 let element, object, mesh, button
 
+//Location Hash
+// Removes any hash, and triggers event listener
+location.hash = "";
+window.onhashchange = function() {
+    if (location.hash === '#thankyou') {
+      // animate camera to about section
+        console.log("Thank You")
+    } else if (location.hash === '#work') {
+      // animate camera to work section
+    } else if (location.hash === '') {
+      // animate camera to home section
+    }
+}
 /**
  * Mouse
  */
@@ -103,15 +116,29 @@ rayDirection.normalize()
 
 function createInput( width, height, cssColor, pos, rot ) {
     element = document.createElement( 'form' );
+    element.setAttribute("name", "mc-embedded-subscribe-form");
+    element.setAttribute("method", "post");
+    element.setAttribute("action", "https://yahoo.us1.list-manage.com/subscribe/post?u=6b2a86440b03a37f8c380cbcf&amp;id=69316c01bd");
+    element.setAttribute("id", "mc-embedded-subscribe-form");
+    element.setAttribute("class", "validate");
+    // element.setAttribute("target", "_blank");
+    element.setAttribute("novalidate", "true");
     element.style.width = width + 'px';
     element.style.height = height + 'px';
     element.style.opacity = 0.75;
-    element.style.background = cssColor;
+    // element.style.background = cssColor;
     element.style.borderStyle = 'solid';
     element.style.borderWidth = 1+'px';
 
 
     const input = document.createElement( 'input' );
+    input.setAttribute("type", "email");
+    input.setAttribute("value", "init");
+    input.setAttribute("name", "EMAIL");
+    input.setAttribute("class", "email");
+    input.setAttribute("id", "mce-EMAIL");
+    input.setAttribute("placeholder", "email-address");
+    input.setAttribute("required", "true");
     input.style.width = width*3/5 + 'px';
     input.style.height = height + 'px';
 	input.className = 'input';
@@ -119,11 +146,16 @@ function createInput( width, height, cssColor, pos, rot ) {
 	element.appendChild( input );
 
 
-    button = document.createElement( 'button' );
+    button = document.createElement( 'input' );
+    button.setAttribute("type", "submit");
+    button.setAttribute("value", "Subscribe");
+    button.setAttribute("name", "subscribe");
+    button.setAttribute("id", "mc-embedded-subscribe");
+    button.setAttribute("class", "button");
     button.style.width = width/5 + 'px';
     button.style.height = height + 'px';
     button.style.opacity = 0.75;
-    button.style.background = cssColor;
+    // button.style.background = cssColor;
     button.style.borderStyle = 'solid';
     button.style.borderWidth = 1+'px';
     element.appendChild( button );
@@ -136,14 +168,14 @@ function createInput( width, height, cssColor, pos, rot ) {
         console.log('Input Clicked!') 
         input.focus()
     };
-    // scene2.add( object );
+    scene2.add( object );
 
     // scene1追加用
     const geometry = new THREE.PlaneGeometry( width, height );
     mesh = new THREE.Mesh( geometry, material );
     mesh.position.copy( object.position );
     mesh.rotation.copy( object.rotation );
-    // scene.add( mesh );
+    scene.add( mesh );
 }
 
 
