@@ -18,6 +18,14 @@ body
     outline: none;
 }
 
+#description{
+    font-size:12px;
+    line-height: 200%;
+}
+#mc-embedded-subscribe-form{
+    /* border-style: none!important; */
+}
+
 #mc-embedded-subscribe{
     background-color:brown;
 }
