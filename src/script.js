@@ -30,13 +30,8 @@ let element, object, mesh, button, breadMesh;
 
 //Init Setting
 const scale = 30;
-const contentWidth = 320;
-
-/**
- * AxisHelper
- */
-const axesHelper = new THREE.AxesHelper( 100 );
-scene.add( axesHelper );
+const contentWidth = 280;
+const initialZ = scale*12;
 
 
 /**
@@ -152,7 +147,7 @@ function createInput( width, height, cssColor, pos, rot ) {
     element.setAttribute("novalidate", "true");
     element.style.width = width + 'px';
     element.style.height = height + 'px';
-    element.style.opacity = 0.75;
+    // element.style.opacity = 0.75;
     // element.style.background = cssColor;
     // element.style.borderStyle = 'solid';
     // element.style.borderWidth = 1+'px';
@@ -164,7 +159,7 @@ function createInput( width, height, cssColor, pos, rot ) {
     input.setAttribute("name", "EMAIL");
     input.setAttribute("class", "email");
     input.setAttribute("id", "mce-EMAIL");
-    input.setAttribute("placeholder", "email-address");
+    input.setAttribute("placeholder", "YourAddress@mail.com");
     input.setAttribute("required", "true");
     input.style.width = width*3.8/5 + 'px';
     input.style.height = height + 'px';
@@ -183,8 +178,8 @@ function createInput( width, height, cssColor, pos, rot ) {
     button.style.height = height + 'px';
     button.style.opacity = 0.75;
     // button.style.background = cssColor;
-    button.style.borderStyle = 'solid';
-    button.style.borderWidth = 1+'px';
+    // button.style.borderStyle = 'solid';
+    // button.style.borderWidth = 1+'px';
     element.appendChild( button );
 
     object = new CSS3DObject( element);
@@ -210,12 +205,12 @@ function createInput( width, height, cssColor, pos, rot ) {
 createInput(
     contentWidth, 32,
     'seagreen',
-    new THREE.Vector3( 0, 0, -240 ),
+    new THREE.Vector3( 0, 0, -280 ),
     new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, - 180 * THREE.MathUtils.DEG2RAD )
 )
 createDescription(
-    contentWidth, 200,
-    new THREE.Vector3( 0, 0, -120 ),
+    contentWidth, 170,
+    new THREE.Vector3( 0, 0, -160 ),
     new THREE.Euler( - 90 * THREE.MathUtils.DEG2RAD, 0, - 180 * THREE.MathUtils.DEG2RAD )
 )
 
@@ -247,7 +242,7 @@ window.addEventListener('resize', () =>
 
 function updateCamera(ev) {
     let div1 = document.getElementById("div1");
-	camera.position.z = - window.scrollY-300;
+	camera.position.z = - window.scrollY-initialZ;
 }
 
 window.addEventListener("scroll",()=> {
@@ -260,14 +255,14 @@ window.addEventListener("scroll",()=> {
 // Base camera
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100*scale)
 camera.position.x = 0*scale
-camera.position.y = 5*scale
-camera.position.z = - window.scrollY - 300
+camera.position.y = 9*scale
+camera.position.z = - window.scrollY - initialZ
 camera.lookAt(0, 0, 0);
 scene.add(camera)
 
 gui.add(camera.position, 'x').min(0*scale).max(0).step(1)
 gui.add(camera.position, 'y').min(5*scale).max(5*scale+180).step(1)
-gui.add(camera.position, 'z').min(-10*scale).max(0).step(1)
+gui.add(camera.position, 'z').min(-100*scale).max(0).step(1)
 
 /**
  * Renderer
