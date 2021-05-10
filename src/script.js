@@ -65,15 +65,20 @@ gltfLoader.setDRACOLoader(dracoLoader)
 /**
  * Textures
  */
-const bakedTexture = textureLoader.load('baked.jpg')
+const bakedTexture = textureLoader.load('baked002.jpg')
 bakedTexture.flipY = false
 bakedTexture.encoding = THREE.sRGBEncoding
+
+const bakedBreadTexture = textureLoader.load('baked_bread.jpg')
+bakedBreadTexture.flipY = false
+bakedBreadTexture.encoding = THREE.sRGBEncoding
 
 /**
  * Materials
  */
 // Baked Material
 const bakedMaterial = new THREE.MeshBasicMaterial({map:bakedTexture})
+const bakedBreadMaterial = new THREE.MeshBasicMaterial({map:bakedBreadTexture})
 const material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, wireframeLinewidth: 1, side: THREE.FrontSide, transparent: true, opacity:0 } );
 
 
@@ -81,7 +86,7 @@ const material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true
  * Models
  */
 gltfLoader.load(
-    'toaster.glb',
+    'toaster002.glb',
     (gltf)=>{
         gltf.scene.traverse((child)=>{
             // console.log(child)
@@ -93,7 +98,8 @@ gltfLoader.load(
         gltf.scene.scale.set(1*scale,1*scale,1*scale); 
         breadMesh = gltf.scene.children.find((child) => child.name === 'bread')
         handleMesh = gltf.scene.children.find((child) => child.name === 'handle')
-        
+        breadMesh.material = bakedBreadMaterial
+
         if (location.hash === '#thankyou') {
             // animate bread
             // console.log("Thank You from IF")
@@ -133,7 +139,7 @@ function resetHandle(elapsedTime){
  */
 function createDescription(width, height, pos, rot){
     element = document.createElement( 'p' );
-    const textNode = document.createTextNode('『Toaster 🍞 』は、骨董マニアでネオン作家の市川と、デジファブフリークな中島、２人のデザイナが、LODGEの活動の中で話題になったこと、実験したこと、調べたこと、ボツになった企画などを、ゆるく紹介していく不定期のニュースレターです。');
+    const textNode = document.createTextNode('『Toaster 🍞 』は、ネオン作家の市川と、デジファブフリークな中島、２人のデザイナが、LODGEの活動の中で話題になったこと、実験したこと、調べたこと、ボツになった企画などを、ゆるく紹介していく不定期のニュースレターです。');
     element.setAttribute("id", "description");
     element.style.width = width + 'px';
     element.style.height = height + 'px';
@@ -275,9 +281,9 @@ camera.position.z = - window.scrollY - initialZ
 camera.lookAt(0, 0, 0);
 scene.add(camera)
 
-gui.add(camera.position, 'x').min(0*scale).max(0).step(1)
-gui.add(camera.position, 'y').min(5*scale).max(5*scale+180).step(1)
-gui.add(camera.position, 'z').min(-100*scale).max(0).step(1)
+// gui.add(camera.position, 'x').min(0*scale).max(0).step(1)
+// gui.add(camera.position, 'y').min(5*scale).max(5*scale+180).step(1)
+// gui.add(camera.position, 'z').min(-100*scale).max(0).step(1)
 
 /**
  * Renderer
